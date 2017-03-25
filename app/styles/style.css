@@ -110,6 +110,14 @@ input[type="checkbox"] {
 	margin-top: -2px;
  }
 
+ #markAllCompleted {
+ 	opacity: 0.5;
+ }
+
+ #clearCompleted {
+ 	opacity: 0;
+ }
+
 #markAllCompleted:hover::after {
 	content: attr(data-title); 	
 	position: absolute; /* Абсолютное позиционирование */

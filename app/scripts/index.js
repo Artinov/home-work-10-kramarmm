@@ -14,7 +14,8 @@ var inputText = $("#todoText"),
     showActive = $("#showActive"),
     showCompleted = $("#showCompleted"),
     btnGroup = $(".btn-group"),
-    todoIndexValue = 0;
+    todoIndexValue = 0,
+    checkboxCounter = 0;
 
 // TODO OBJECT PROTOTYPE
 function makeTodo(text, index) {
@@ -45,6 +46,7 @@ function addEnteredTodo(condition) {
         todoIndexValue++;
         todos.push(new makeTodo(inputText.value, todoIndexValue));
         inputText.value = ""; // clear form after enter
+        markAllCompleted.style.opacity = 0.5;
         renderTodos();
         countActiveTodos();
     }
@@ -79,12 +81,23 @@ function renderTodos() {
             todo = todos[todo];
 
             if (e.path[0].checked) {
+                checkboxCounter++;
+                // console.log(checkboxCounter);
                 li.setAttribute("class","horizontal-line todo-done");
+                clearCompleted.style.opacity = 1;
                 todo.isDone = true;
             } else {
+                checkboxCounter--;
+                // console.log(checkboxCounter);
                 li.setAttribute("class","horizontal-line");
+                clearCompleted.style.opacity = 0;
                 todo.isDone = false;
             }
+
+todos.length == showCurrentTodos(true).length ? markAllCompleted.style.opacity = 1 : markAllCompleted.style.opacity = 0.5;
+console.log(todos.length);
+console.log(showCurrentTodos(true).length);
+        // checkboxCounter ? clearCompleted.style.opacity = 1 : clearCompleted.style.opacity = 0;
             countActiveTodos();
         }
 
@@ -160,6 +173,7 @@ clearCompleted.onclick = function() {
             todosList.removeChild(li);
         }
     });
+    clearCompleted.style.opacity = 0;
     todos = showCurrentTodos(false);
 }
 
@@ -167,8 +181,10 @@ clearCompleted.onclick = function() {
 // MARK ALL TRUE/FALSE
 markAllCompleted.onclick = function() {
     if (showCurrentTodos(false).length == 0) {
+        markAllCompleted.style.opacity = 0.5;
         inverseIsDoneInto(false);
     } else {
+        markAllCompleted.style.opacity = 1;
         inverseIsDoneInto(true);
     }
     countActiveTodos();
